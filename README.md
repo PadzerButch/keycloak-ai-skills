@@ -1,6 +1,11 @@
 # Keycloak AI Skills
 
-Reusable AI skills for working with Keycloak. [add-skill](skills/add-skill/SKILL.md) turns a task description into a skill using a common template.
+Reusable AI skills for working with Keycloak.
+
+| Skill | Purpose |
+| --- | --- |
+| [add-skill](skills/add-skill/SKILL.md) | Turn a task description into a reusable skill. |
+| [triage-cve](skills/triage-cve/SKILL.md) | Analyze an issue, check duplicates, classify security impact, assess CVSS, and draft a report and comment. |
 
 The shared instructions follow [Agent Skills](https://agentskills.io/specification). The root `plugin.json` follows [Agent Plugins 1.0](https://agent-plugins.org/specification). Small client integrations all use the same `skills/` directory.
 
@@ -54,6 +59,14 @@ Use add-skill to create a skill for reviewing Keycloak configuration.
 In Claude Code, use `/keycloak-ai-skills:add-skill`. In Codex, use `$add-skill`. For discovery paths and activation details, see [client support](skills/add-skill/references/client-support.md). Verified versions and limitations are recorded in [compatibility checks](docs/compatibility.md).
 
 New collection skills go in `skills/`. Standalone skills go in the target tool's discovery directory; `add-skill` identifies that tool before choosing a path.
+
+To triage a specific issue, provide its URL, tracker-qualified ID, or text:
+
+```text
+Use triage-cve to analyze <issue-url>, check for duplicates, and draft a report and short comment.
+```
+
+The skill drafts its findings without posting them. New collection skills become available after the updated plugin is released and installed; start a new session after updating. Structural validation does not verify client discovery or invocation.
 
 ## Maintain
 
