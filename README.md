@@ -1,11 +1,12 @@
 # Keycloak AI Skills
 
-Reusable AI skills for working with Keycloak.
+Reusable AI skills for Keycloak skill authoring, security triage, and pull request review. The current package version is `0.2.0`.
 
 | Skill | Purpose |
 | --- | --- |
 | [add-skill](skills/add-skill/SKILL.md) | Turn a task description into a reusable skill. |
-| [triage-cve](skills/triage-cve/SKILL.md) | Analyze an issue, check duplicates, classify security impact, assess CVSS, and draft a report and comment. |
+| [triage-cve](skills/triage-cve/SKILL.md) | Analyze an issue, check duplicates, classify security impact, assess CVSS, urgency, and embargo handling, and draft a report, comment, and workflow handoff. |
+| [review-pr](skills/review-pr/SKILL.md) | Review fixes, enhancements, and new features for requirements, specification applicability, completeness, regressions, and valid findings; draft a review. |
 
 The shared instructions follow [Agent Skills](https://agentskills.io/specification). The root `plugin.json` follows [Agent Plugins 1.0](https://agent-plugins.org/specification). Small client integrations all use the same `skills/` directory.
 
@@ -46,7 +47,7 @@ IBM Bob Shell:
 bob extensions install https://github.com/lhanusov/keycloak-ai-skills
 ```
 
-Bob Shell uses an extension context file to find the shared skill. Bob IDE has separate [skill discovery](https://bob.ibm.com/docs/ide/features/skills); the Shell command does not install an IDE plugin. Other Agent Skills clients can use the same skill folder through their own installer.
+Bob Shell uses an extension context file to find the shared skills. Bob IDE has separate [skill discovery](https://bob.ibm.com/docs/ide/features/skills); the Shell command does not install an IDE plugin. Other Agent Skills clients can use the same skill folders through their own installer.
 
 ## Use
 
@@ -66,13 +67,31 @@ To triage a specific issue, provide its URL, tracker-qualified ID, or text:
 Use triage-cve to analyze <issue-url>, check for duplicates, and draft a report and short comment.
 ```
 
-The skill drafts its findings without posting them. New collection skills become available after the updated plugin is released and installed; start a new session after updating. Structural validation does not verify client discovery or invocation.
+Triage also records urgency, disclosure/embargo reasoning, and the next responsible role or team. For the security-tracker workflow, it drafts tracker changes and a handoff using the current handling policy and authorized sources. It keeps CVSS, project severity, CVE status, and disclosure decisions distinct; proposed actions require authorization before execution.
+
+To review a proposed fix, enhancement, or new feature, provide a PR URL or a diff with base/head revisions and issue/design context:
+
+```text
+Use review-pr to review <pr-url> and draft an evidence-based review.
+```
+
+Optionally request `bug`, `feature`, `hardening`, or `vulnerability` mode; `feature` covers enhancements and new capabilities. Otherwise the skill selects relevant checks from the evidence and states any uncertainty. All modes include specification applicability, finding validation, tests, compatibility, and baseline security checks. Feature review adds acceptance, design, completeness, and adoption checks; additional security guidance is loaded for relevant controls and trust boundaries as well as fixes. A vulnerability fix does not need a CVE. `triage-cve` remains optional for separate issue triage and severity assessment.
+
+For example:
+
+```text
+Use review-pr in feature mode to review <pr-url> against <design-or-issue-url>.
+```
+
+The skill's [review guidance](skills/review-pr/references/review-guidance.md) maps CNCF, Linux Foundation, OpenSSF, OWASP, Google, Apache TVM, and IBM sources to applicable checks. It distinguishes Keycloak requirements from external recommendations and historical context.
+
+In Codex, invoke `$review-pr`; in Claude Code, use `/keycloak-ai-skills:review-pr`. These skills draft findings without posting them. New collection skills become available after the updated plugin is released and installed; start a new session after updating. Structural validation does not verify client discovery or invocation.
 
 ## Maintain
 
-Keep shared metadata in `plugin.json` and instructions in `skills/`. The Codex catalog is `.agents/plugins/marketplace.json`; Claude and Copilot share `.claude-plugin/marketplace.json`. Claude, Gemini, and Bob Shell have small compatibility manifests. `BOB.md` routes Bob Shell to the shared skill without duplicating its instructions.
+Keep shared metadata in `plugin.json` and instructions in `skills/`. The Codex catalog is `.agents/plugins/marketplace.json`; Claude and Copilot share `.claude-plugin/marketplace.json`. Claude, Gemini, and Bob Shell have small compatibility manifests. `BOB.md` routes Bob Shell to the shared skills without duplicating their instructions.
 
-When releasing, update the version in `plugin.json` and the compatibility manifests. Checks reject mismatched metadata and catalogs. There is no metadata generator.
+When releasing, keep the version identical in `plugin.json`, `.claude-plugin/plugin.json`, `gemini-extension.json`, and `bob-extension.json`, and update the version stated in this README. Keep shared descriptions consistent across these manifests. The marketplace catalogs reference the package and have no version field. Checks reject mismatched metadata and catalogs. There is no metadata generator.
 
 With Python 3.10+:
 

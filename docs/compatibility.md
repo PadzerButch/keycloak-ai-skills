@@ -1,6 +1,10 @@
 # Compatibility checks
 
-The shared skill uses Agent Skills frontmatter, relative resource paths, and ordinary Markdown instructions. Root `plugin.json` is an Agent Plugins 1.0 package. Client-specific files handle installation; they do not contain separate copies of the workflow.
+The shared skills use Agent Skills frontmatter, relative resource paths, and ordinary Markdown instructions. Root `plugin.json` is an Agent Plugins 1.0 package. Client-specific files handle installation; they do not contain separate copies of the workflows.
+
+Package `0.2.0` includes `add-skill`, `triage-cve`, and `review-pr`. Its manifests, packaged resources, and local links pass the collection validator; the 43 Python validation tests pass on Linux with Python 3.14.7. These structural checks do not verify client discovery or review/triage behavior.
+
+The client checks below are historical checks of the initial `add-skill` package. They have not been repeated for `0.2.0`; discovery and invocation of `triage-cve` and `review-pr` remain unverified.
 
 | Client | Integration | Local verification |
 | --- | --- | --- |
@@ -13,7 +17,7 @@ The shared skill uses Agent Skills frontmatter, relative resource paths, and ord
 
 Local Python checks run on Linux with Python 3.14.7. CI covers Linux and Windows with Python 3.10 and 3.14; hosted runs start after publication.
 
-Installation, discovery, and invocation are separate checks. No GitHub-hosted installation has been tested because this checkout has not been published. Codex created the requested test skill under `skills/summarize-notes/`; automatic discovery of that generated standalone skill was not tested. An earlier test's sandbox made `.agents/` read-only. Temporary Codex installation was removed and the original configuration restored; other installation checks use temporary client settings.
+Installation, discovery, and invocation are separate checks. During the historical checks, no GitHub-hosted installation was tested because the checkout had not been published. Codex created the requested test skill under `skills/summarize-notes/`; automatic discovery of that generated standalone skill was not tested. An earlier test's sandbox made `.agents/` read-only. Temporary Codex installation was removed and the original configuration restored; other installation checks used temporary client settings.
 
 Gemini's first installation attempt hit the sandbox's OS user-lookup restriction. A clean reinstall outside that sandbox completed successfully. Claude's validator reports optional marketplace-description, author, and public-directory icon warnings; local installation and discovery pass without them.
 

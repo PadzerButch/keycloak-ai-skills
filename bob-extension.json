@@ -1,6 +1,6 @@
 {
   "name": "keycloak-ai-skills",
-  "version": "0.1.0",
-  "description": "Reusable AI skills for Keycloak workflows, starting with consistent skill authoring.",
+  "version": "0.2.0",
+  "description": "Reusable AI skills for Keycloak skill authoring, security triage, and pull request review.",
   "contextFileName": "BOB.md"
 }
