@@ -105,6 +105,14 @@ CI runs these checks on Linux and Windows with Python 3.10 and 3.14. The validat
 
 ## Publish
 
+Prepare and commit the version changes described above, then push them to the default branch. To publish a release, open **Actions → Release → Run workflow**, select the default branch, and enter the committed version without a `v` prefix (for example, `0.2.0`). The workflow supports stable `X.Y.Z` versions.
+
+The manual workflow verifies all four manifest versions and the README version, runs package validation and tests on Linux and Windows with Python 3.10 and 3.14, then tags the exact validated commit as `vX.Y.Z` and publishes a GitHub Release with generated release notes. GitHub provides the source archives. It uses the built-in `GITHUB_TOKEN`; no additional release secret is required. Repository rules must allow that token to create the release tag.
+
+If publishing fails after tag creation, rerun the original workflow run so it uses the same commit. An existing tag is accepted only when it points to that commit; an existing release causes publication to fail without replacing it. The workflow must first be present on the default branch to appear in the manual Actions menu.
+
+For the initial repository push:
+
 ```bash
 git status --short
 git add -A

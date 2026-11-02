@@ -1,0 +1,97 @@
+name: Release
+run-name: Release v${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Committed package version to release (X.Y.Z, without v)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.14"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify release version and branch
+        shell: python
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          version = os.environ["RELEASE_VERSION"]
+          if not re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", version):
+              raise SystemExit("Version must be X.Y.Z without a v prefix or leading zeroes")
+          if os.environ["GITHUB_REF"] != "refs/heads/" + os.environ["DEFAULT_BRANCH"]:
+              raise SystemExit("Releases must run from the default branch")
+          for manifest in ("plugin.json", ".claude-plugin/plugin.json",
+                           "gemini-extension.json", "bob-extension.json"):
+              actual = json.loads(Path(manifest).read_text(encoding="utf-8"))["version"]
+              if actual != version:
+                  raise SystemExit(f"{manifest}: expected {version}, found {actual}")
+          readme = Path("README.md").read_text(encoding="utf-8")
+          if f"The current package version is `{version}`." not in readme:
+              raise SystemExit("Update the current package version in README.md before releasing")
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/check-package.py
+
+  release:
+    needs: validate
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Tag the validated commit and publish release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          tag="v${RELEASE_VERSION}"
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            tagged_commit=$(git rev-parse "refs/tags/$tag^{commit}")
+            if [[ "$tagged_commit" != "$RELEASE_SHA" ]]; then
+              echo "::error::Tag $tag already points to a different commit"
+              exit 1
+            fi
+          else
+            gh api --method POST "repos/$GH_REPO/git/refs" \
+              -f "ref=refs/tags/$tag" -f "sha=$RELEASE_SHA"
+          fi
+          gh release create "$tag" --verify-tag --title "$tag" --generate-notes
