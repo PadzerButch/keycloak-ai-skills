@@ -56,22 +56,14 @@ The researched [action definitions](https://github.com/keycloak/keycloak-github-
 | `priority-important` | Selects important. |
 | `priority-normal`, `priority-low` | Posts a message, adds a reaction and contribution/aging labels, and removes the milestone. |
 
-The implementation replaces existing status labels, removes the action label, and can reopen a closed issue for non-closing actions. Its comment-producing actions replace earlier bot comments. Explain relevant effects; do not replay an action merely to restate an existing decision. Comment triggers have additional restrictions described below.
+The implementation replaces existing status labels, removes the action label, and can reopen a closed issue for non-closing actions. Its comment-producing actions replace earlier bot comments. Explain relevant effects; do not replay an action merely to restate an existing decision. Before drafting a comment trigger, check eligibility in the linked automation notes.
 
-The triage guide documents missing-information expiry after 14 days, low/normal inactivity expiry after 90/180 days, and reaction-based promotion at 10/20 reactions. A reporter reply returns a missing-information issue to triage. It describes removing `status/auto-expire` or `status/auto-bump` to disable those behaviors. Treat these as policy; the discrepancies below prevent assuming every documented effect is live.
+The triage guide documents missing-information expiry after 14 days, low/normal inactivity expiry after 90/180 days, and reaction-based promotion at 10/20 reactions. A reporter reply returns a missing-information issue to triage. It describes removing `status/auto-expire` or `status/auto-bump` to disable those behaviors. Treat these as intended policy; consult [automation notes](automation-notes.md) before relying on expiration or bump effects.
 
 For an already-triaged issue, the guide directs adding the new `priority/...` label; the bot removes the previous priority and disables automatic bumping/expiration for important/blocker. Reassess when impact, workarounds, or evidence changes. Avoid automatically replaying the initial priority action and its other side effects.
 
 Consider `backport/<release branch>` only for verified affected, applicable maintained branches. It participates in patch-release tracking and is later replaced by `release/x.y.z`; do not add release labels manually. Separate a backport proposal from approval, implementation, and release evidence.
 
-## Dated discrepancies to recheck
+## Conditional automation checks
 
-Verified on 2026-11-03 against Keycloak commit `7c989e08081001aae3881e1bd8aadcb5550b5429`, bot commit `d0c61db5708153007868b5603204116b2dbf160f`, and the public label API. Deployed bot revision/configuration was not verified.
-
-- **Missing-information label:** the guide says `status/missing-info`; the live inventory uses `status/missing-information`. The action is `action/missing-info`. Verify resulting status independently from the trigger name.
-- **Team bump:** the guide mentions `team/rh-iam`, absent from the retrieved live inventory. Use the current team map; do not manufacture an assignment to increase priority.
-- **Expiration:** the [scheduler source](https://github.com/keycloak/keycloak-github-bot/blob/d0c61db5708153007868b5603204116b2dbf160f/src/main/java/org/keycloak/gh/bot/BugActionScheduleAutoExpire.java) uses the configured low-priority cutoff in both searches, conflicting with the documented separate intervals. Report the discrepancy, not an asserted production outcome.
-- **Automatic bumping:** the [bump source](https://github.com/keycloak/keycloak-github-bot/blob/d0c61db5708153007868b5603204116b2dbf160f/src/main/java/org/keycloak/gh/bot/BugActionScheduleAutoBump.java) queries auto-expiration rather than auto-bump. Do not promise that removing auto-bump alone disables the deployed behavior without verification.
-- **Comment eligibility:** the [handler](https://github.com/keycloak/keycloak-github-bot/blob/d0c61db5708153007868b5603204116b2dbf160f/src/main/java/org/keycloak/gh/bot/BugActionsOnComment.java) checks for an open bug and a user who belongs to the organization. A drafted trigger is not evidence any commenter can execute it.
-
-Keep unresolved live effects in the handoff. Routine triage does not authorize fixing or testing the bot against live issues.
+Read [automation notes](automation-notes.md) when proposing exact missing-information/team labels, expiration or reaction-based bump behavior, or a bot-triggering comment. Verify only the effects relevant to the action; repository source does not establish the deployed bot revision.

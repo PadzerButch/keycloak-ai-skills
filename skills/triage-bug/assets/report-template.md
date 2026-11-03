@@ -1,5 +1,7 @@
 # Bug triage: {{issue title}}
 
+<!-- Content checklist: omit irrelevant fields, combine short sections, and use prose instead of tables for straightforward cases. -->
+
 {{Lead with the recommended disposition, proposed priority or pending decision, confidence with its reason, and the immediate next step. Adapt the length to the case and omit irrelevant sections.}}
 
 - Issue: {{canonical URL or supplied identity; current state}}

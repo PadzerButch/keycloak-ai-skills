@@ -1,5 +1,7 @@
 # PR review: {{title}}
 
+<!-- Content checklist: omit irrelevant fields, combine short sections, and use prose instead of tables for straightforward cases. -->
+
 - Change: {{PR link or supplied patch identity}}
 - Reviewed: {{date; repository, target branch, base SHA, merge-base SHA, head SHA; unavailable fields}}
 - Scope and mode: {{bug / feature / hardening / vulnerability; selection rationale and uncertainty; distribution, version, configuration}}

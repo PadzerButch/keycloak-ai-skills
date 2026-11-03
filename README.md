@@ -58,7 +58,7 @@ Start a new session after installation and ask:
 Use add-skill to create a skill for reviewing Keycloak configuration.
 ```
 
-In Claude Code, use `/keycloak-ai-skills:add-skill`. In Codex, use `$add-skill`. For discovery paths and activation details, see [client support](skills/add-skill/references/client-support.md). Verified versions and limitations are recorded in [compatibility checks](docs/compatibility.md).
+In Claude Code, use `/keycloak-ai-skills:add-skill`. In Codex, use `$add-skill`. For discovery paths and activation details, see [client support](skills/add-skill/references/client-support.md). For packaging details, see [client compatibility](docs/compatibility.md).
 
 New collection skills go in `skills/`. Standalone skills go in the target tool's discovery directory; `add-skill` identifies that tool before choosing a path.
 
@@ -104,10 +104,15 @@ Keep shared metadata in `plugin.json` and instructions in `skills/`. The Codex c
 
 When releasing, keep the version identical in `plugin.json`, `.claude-plugin/plugin.json`, `gemini-extension.json`, and `bob-extension.json`, and update the version stated in this README. Keep shared descriptions consistent across these manifests. The marketplace catalogs reference the package and have no version field. Checks reject mismatched metadata and catalogs. There is no metadata generator.
 
+Common evidence, security-handling, and duplicate-search guidance is maintained in `shared/`. Edit those sources and run `python scripts/sync-shared.py --write` to refresh the checked-in references inside each consuming skill. Commit the source and copies together. Each skill remains installable on its own; consumers load only their local references. CI and release checks reject missing or stale copies. No synchronization is needed when installing or using a skill.
+
+Use the [offline scenario guide](docs/skill-validation.md) when changing triage or review decisions; structural tests alone do not validate model behavior.
+
 With Python 3.10+:
 
 ```bash
 python -m pip install -r requirements-dev.txt
+python scripts/sync-shared.py
 python scripts/check-package.py
 python -m unittest discover -s tests -v
 ```

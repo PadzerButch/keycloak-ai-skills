@@ -1,5 +1,7 @@
 # Triage report: {{issue title}}
 
+<!-- Content checklist: omit irrelevant fields, combine short sections, and use prose instead of tables for straightforward cases. -->
+
 - Issue: {{canonical link or supplied identifier}}
 - Assessed: {{date; source retrieval dates where relevant}}
 - Disposition and confidence: {{classification; confidence and reason}}

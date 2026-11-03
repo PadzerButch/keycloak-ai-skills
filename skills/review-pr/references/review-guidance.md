@@ -1,6 +1,6 @@
 # Review guidance and applicability
 
-Use this map to select external guidance for the changed behavior. Read the relevant source or section, not the entire list on every review. The sources were checked on 2026-11-02; verify the version and applicability when relying on a specific requirement. These summaries are navigation aids, not copied standards or evidence of certification.
+Use this map to select external guidance for the changed behavior. Read the relevant source or section, not the entire list on every review. Verify the version and applicability when relying on a specific requirement. These summaries are navigation aids, not copied standards or evidence of certification.
 
 ## Authority and scope
 

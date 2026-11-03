@@ -1,26 +1,18 @@
-# Compatibility checks
+# Client compatibility
 
-The shared skills use Agent Skills frontmatter, relative resource paths, and ordinary Markdown instructions. Root `plugin.json` is an Agent Plugins 1.0 package. Client-specific files handle installation; they do not contain separate copies of the workflows.
+The skills use Agent Skills frontmatter, relative resource paths, and Markdown instructions. Root `plugin.json` defines the Agent Plugins package. Client-specific files provide installation and discovery while using the same `skills/` directory.
 
-Package `0.3.0` includes `add-skill`, `triage-bug`, `triage-cve`, and `review-pr`. Its manifests, packaged resources, and local links pass the collection validator; the 43 Python validation tests pass on Linux with Python 3.14.7. These structural checks do not verify client discovery or review/triage behavior.
+| Client | Integration |
+| --- | --- |
+| Codex | Root plugin and `.agents/plugins/marketplace.json` |
+| Claude Code | `.claude-plugin/` |
+| GitHub Copilot CLI | Root plugin and `.claude-plugin/marketplace.json` |
+| Gemini CLI | `gemini-extension.json` and `skills/` |
+| IBM Bob Shell | `bob-extension.json` and `BOB.md` |
+| IBM Bob IDE | Standalone skills in the IDE's discovery directory; see [client support](../skills/add-skill/references/client-support.md) |
 
-The `triage-bug` instructions were also manually reviewed on 2026-11-03 against 16 synthetic scenarios, including regression priority branches, incomplete and old-release reports, duplicates, merged but unreleased fixes, security routing, migration changes, tool limitations, and documentation/bot discrepancies. Two report/comment examples were walked through offline. This was a review of the written workflow, not an independent model invocation or live tracker test.
+Installation, skill discovery, and invocation are separate capabilities. Check the installed client's supported paths and reload behavior when diagnosing availability. Bob Shell extensions and Bob IDE skill discovery are separate integrations.
 
-The client checks below are historical checks of the initial `add-skill` package. They have not been repeated for `0.3.0`; discovery and invocation of `triage-bug`, `triage-cve`, and `review-pr` remain unverified.
-
-| Client | Integration | Local verification |
-| --- | --- | --- |
-| Codex CLI 0.164.0 | Root plugin and `.agents/plugins/marketplace.json` | Fresh installation, discovery, and headless invocation passed with the portable manifest and shared skill. The generated skill also passed the bundled validator. |
-| Claude Code 2.1.311 | `.claude-plugin/` | Native validation, local marketplace installation, and component discovery passed; inventory lists `add-skill`. Invocation has not been tested. |
-| GitHub Copilot CLI 1.0.104 | Root plugin; shared `.claude-plugin/marketplace.json` | Local marketplace installation reported one skill installed and enabled. Invocation has not been tested. |
-| Gemini CLI 0.65.0 | `gemini-extension.json`; shared `skills/` | Native validation, clean installation, and skill discovery passed; `add-skill` is enabled. Invocation has not been tested. |
-| IBM Bob Shell 1.0.6 | `bob-extension.json` and `BOB.md` | Native extension validation passed. Installation and context-driven invocation have not been tested. |
-| IBM Bob IDE | Agent Skills in Bob's discovery directories | Documented format compatibility; IDE installation and activation have not been tested here. |
-
-Local Python checks run on Linux with Python 3.14.7. CI covers Linux and Windows with Python 3.10 and 3.14; hosted runs start after publication.
-
-Installation, discovery, and invocation are separate checks. During the historical checks, no GitHub-hosted installation was tested because the checkout had not been published. Codex created the requested test skill under `skills/summarize-notes/`; automatic discovery of that generated standalone skill was not tested. An earlier test's sandbox made `.agents/` read-only. Temporary Codex installation was removed and the original configuration restored; other installation checks used temporary client settings.
-
-Gemini's first installation attempt hit the sandbox's OS user-lookup restriction. A clean reinstall outside that sandbox completed successfully. Claude's validator reports optional marketplace-description, author, and public-directory icon warnings; local installation and discovery pass without them.
+Collection checks cover package metadata, local resource links, shared-reference synchronization, containment, and standalone relocation. CI runs on Linux and Windows with Python 3.10 and 3.14. See the README's [maintenance instructions](../README.md#maintain) for commands and the [scenario guide](skill-validation.md) for workflow checks.
 
 Installation contracts: [Codex plugins](https://developers.openai.com/plugins/build/plugins), [Claude plugins](https://code.claude.com/docs/en/plugins-reference), [Copilot plugins](https://docs.github.com/en/copilot/concepts/customizations/plugins), [Gemini extensions](https://geminicli.com/docs/extensions/reference/), [Bob IDE skills](https://bob.ibm.com/docs/ide/features/skills).

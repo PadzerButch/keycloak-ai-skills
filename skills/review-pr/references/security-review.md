@@ -4,7 +4,7 @@ Use this reference for hardening and vulnerability reviews, new or materially ch
 
 ## Establish the security scope
 
-Record the distribution (upstream Keycloak or downstream build), exact reviewed/tested revision and affected baseline where applicable, feature maturity, relevant configuration, and disclosure status. Read the target repository's `SECURITY.md` and the current [Keycloak security policy](https://www.keycloak.org/security); explain material differences. Apply its handling for experimental features, dependency reports, reproduction evidence, and AI-assisted reporting rather than assuming all security concerns follow the same public workflow.
+Read [security handling](security-handling.md) before assessing disclosure or submission. Establish distribution, reviewed/tested revision, affected baseline where applicable, feature maturity, configuration, and disclosure status using the shared evidence guidance.
 
 Define the potential attacker, controlled inputs, required privileges, reachable entry point, assets, and security boundary. For a finding, establish the concrete confidentiality, integrity, or availability consequence. State the intended guarantee, such as “a user authorized in realm A cannot read realm B's resources.” Assess documented guarantees and defaults as well as explicit protocol requirements. Use the [source map](review-guidance.md) to select relevant design and code-review guidance.
 
@@ -58,4 +58,4 @@ Record versions and configurations actually inspected or tested; do not extrapol
 
 For features, report security guarantees and control evidence, assumptions, and unresolved design questions. For hardening or vulnerability fixes, include separate conclusions for the security claim, advisory applicability, and fix effectiveness, with counterevidence, residual risks, remediation, and confidence. Omit inapplicable advisory/remediation fields rather than implying that every feature fixes a vulnerability. Missing CVE assignment must not reduce the depth of vulnerability review. Keep CVSS assessment separate; attribute any quoted published score and do not present it as a fresh calculation.
 
-Keep private report content and unpublished bypass details out of public searches and draft comments, even when the original advisory is public. Use authorized private sources or non-sensitive public search terms. A public fix PR does not authorize disclosure of a newly found vulnerability. Do not submit reports or request assignment as part of this skill. If a separate security-submission draft is requested, follow the current project policy, disclose AI assistance, and state reproduction and human-review status accurately.
+Apply the shared security-handling rules to new findings and bypasses, including when an advisory or fix PR is already public.
