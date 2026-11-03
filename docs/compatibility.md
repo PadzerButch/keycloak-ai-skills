@@ -2,9 +2,11 @@
 
 The shared skills use Agent Skills frontmatter, relative resource paths, and ordinary Markdown instructions. Root `plugin.json` is an Agent Plugins 1.0 package. Client-specific files handle installation; they do not contain separate copies of the workflows.
 
-Package `0.2.0` includes `add-skill`, `triage-cve`, and `review-pr`. Its manifests, packaged resources, and local links pass the collection validator; the 43 Python validation tests pass on Linux with Python 3.14.7. These structural checks do not verify client discovery or review/triage behavior.
+Package `0.3.0` includes `add-skill`, `triage-bug`, `triage-cve`, and `review-pr`. Its manifests, packaged resources, and local links pass the collection validator; the 43 Python validation tests pass on Linux with Python 3.14.7. These structural checks do not verify client discovery or review/triage behavior.
 
-The client checks below are historical checks of the initial `add-skill` package. They have not been repeated for `0.2.0`; discovery and invocation of `triage-cve` and `review-pr` remain unverified.
+The `triage-bug` instructions were also manually reviewed on 2026-11-03 against 16 synthetic scenarios, including regression priority branches, incomplete and old-release reports, duplicates, merged but unreleased fixes, security routing, migration changes, tool limitations, and documentation/bot discrepancies. Two report/comment examples were walked through offline. This was a review of the written workflow, not an independent model invocation or live tracker test.
+
+The client checks below are historical checks of the initial `add-skill` package. They have not been repeated for `0.3.0`; discovery and invocation of `triage-bug`, `triage-cve`, and `review-pr` remain unverified.
 
 | Client | Integration | Local verification |
 | --- | --- | --- |

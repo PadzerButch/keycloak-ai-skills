@@ -1,10 +1,11 @@
 # Keycloak AI Skills
 
-Reusable AI skills for Keycloak skill authoring, security triage, and pull request review. The current package version is `0.2.0`.
+Reusable AI skills for Keycloak skill authoring, bug and security triage, and pull request review. The current package version is `0.3.0`.
 
 | Skill | Purpose |
 | --- | --- |
 | [add-skill](skills/add-skill/SKILL.md) | Turn a task description into a reusable skill. |
+| [triage-bug](skills/triage-bug/SKILL.md) | Triage a public bug report, check duplicates and fixes, follow Keycloak's priority flow, and draft a report, comment, and next actions. |
 | [triage-cve](skills/triage-cve/SKILL.md) | Analyze an issue, check duplicates, classify security impact, assess CVSS, urgency, and embargo handling, and draft a report, comment, and workflow handoff. |
 | [review-pr](skills/review-pr/SKILL.md) | Review fixes, enhancements, and new features for requirements, specification applicability, completeness, regressions, and valid findings; draft a review. |
 
@@ -61,7 +62,17 @@ In Claude Code, use `/keycloak-ai-skills:add-skill`. In Codex, use `$add-skill`.
 
 New collection skills go in `skills/`. Standalone skills go in the target tool's discovery directory; `add-skill` identifies that tool before choosing a path.
 
-To triage a specific issue, provide its URL, tracker-qualified ID, or text:
+To triage a public bug, provide its URL, repository-qualified number, or text:
+
+```text
+Use triage-bug to analyze <issue-url>, check duplicates, and draft a report, short comment, and next actions.
+```
+
+The skill follows Keycloak's verification and priority diagrams, keeps impact and confidence separate from priority, and checks current metadata and bot effects. It supports GitHub connectors, `gh` CLI, and pasted evidence with explicit access limits. Its [guidance map](skills/triage-bug/references/triage-guidance.md) ranks Keycloak, OpenSSF, CNCF, Linux Foundation, IBM, Red Hat, and other applicable sources. Reports include security routing when relevant; a full CVE assessment remains a separate task.
+
+In Codex, invoke `$triage-bug`; in Claude Code, use `/keycloak-ai-skills:triage-bug`. It drafts by default; posting comments, triggering bots, and changing tracker state require authorization for those actions.
+
+To assess security impact or CVE relevance, provide an issue URL, tracker-qualified ID, or text:
 
 ```text
 Use triage-cve to analyze <issue-url>, check for duplicates, and draft a report and short comment.
@@ -105,7 +116,7 @@ CI runs these checks on Linux and Windows with Python 3.10 and 3.14. The validat
 
 ## Publish
 
-Prepare and commit the version changes described above, then push them to the default branch. To publish a release, open **Actions → Release → Run workflow**, select the default branch, and enter the committed version without a `v` prefix (for example, `0.2.0`). The workflow supports stable `X.Y.Z` versions.
+Prepare and commit the version changes described above, then push them to the default branch. To publish a release, open **Actions → Release → Run workflow**, select the default branch, and enter the committed version without a `v` prefix (for example, `0.3.0`). The workflow supports stable `X.Y.Z` versions.
 
 The manual workflow verifies all four manifest versions and the README version, runs package validation and tests on Linux and Windows with Python 3.10 and 3.14, then tags the exact validated commit as `vX.Y.Z` and publishes a GitHub Release with generated release notes. GitHub provides the source archives. It uses the built-in `GITHUB_TOKEN`; no additional release secret is required. Repository rules must allow that token to create the release tag.
 
