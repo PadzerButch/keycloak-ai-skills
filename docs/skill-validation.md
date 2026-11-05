@@ -26,4 +26,4 @@ Use the four [fix-issue scenarios](../tests/scenarios/fix-issue.md) when changin
 
 For all four, inspect the actual output for scope, correctness, meaningful regression assertions, and honest execution status. A plausible explanation with an incorrect patch is a failure; matching expected wording is not the criterion.
 
-See [client compatibility](compatibility.md) for packaging and discovery details.
+See [contributing](../CONTRIBUTING.md) for packaging and checks, and [installation](installation.md) for client discovery.
