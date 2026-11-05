@@ -1,6 +1,6 @@
 # Security fixes
 
-Use this reference when correcting a security weakness or vulnerability, assessing a supplied CVE's applicability to a fix, or materially changing a security control. Read [security handling](security-handling.md) before using private evidence, choosing an audience, or preparing disclosure material. Consult the current policy and authorized private process where relevant; do not expose unpublished findings or bypasses through public searches or outputs.
+Use this reference when correcting a security weakness or vulnerability, assessing a supplied CVE's applicability to a fix, or materially changing a security control. Read [security handling](security-handling.md) before using private evidence, choosing an audience, or preparing disclosure material. Consult the applicable security policy; do not expose unpublished findings or bypasses through public searches or outputs.
 
 ## Establish the guarantee
 

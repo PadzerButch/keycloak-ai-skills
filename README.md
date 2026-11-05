@@ -4,14 +4,22 @@ AI skills to investigate Keycloak issues, assess security reports, implement fix
 
 ## Quick start
 
-Choose your client and run its installation commands. Use a current version with plugin or extension support.
+Choose your client, then run either the install or upgrade commands in your terminal. Use a current version with plugin or extension support.
 
 <details>
 <summary>Codex</summary>
 
+Install:
+
 ```bash
 codex plugin marketplace add lhanusov/keycloak-ai-skills
 codex plugin add keycloak-ai-skills@keycloak-skills
+```
+
+Upgrade an existing installation:
+
+```bash
+codex plugin marketplace upgrade keycloak-skills
 ```
 
 </details>
@@ -19,9 +27,18 @@ codex plugin add keycloak-ai-skills@keycloak-skills
 <details>
 <summary>Claude Code</summary>
 
+Install:
+
 ```bash
 claude plugin marketplace add lhanusov/keycloak-ai-skills
 claude plugin install keycloak-ai-skills@keycloak-skills
+```
+
+Upgrade an existing installation:
+
+```bash
+claude plugin marketplace update keycloak-skills
+claude plugin update keycloak-ai-skills@keycloak-skills
 ```
 
 </details>
@@ -29,9 +46,18 @@ claude plugin install keycloak-ai-skills@keycloak-skills
 <details>
 <summary>GitHub Copilot CLI</summary>
 
+Install:
+
 ```bash
 copilot plugin marketplace add lhanusov/keycloak-ai-skills
 copilot plugin install keycloak-ai-skills@keycloak-skills
+```
+
+Upgrade an existing installation:
+
+```bash
+copilot plugin marketplace update keycloak-skills
+copilot plugin update keycloak-ai-skills
 ```
 
 </details>
@@ -39,8 +65,16 @@ copilot plugin install keycloak-ai-skills@keycloak-skills
 <details>
 <summary>Gemini CLI</summary>
 
+Install:
+
 ```bash
 gemini extensions install https://github.com/lhanusov/keycloak-ai-skills
+```
+
+Upgrade an existing installation:
+
+```bash
+gemini extensions update keycloak-ai-skills
 ```
 
 </details>
@@ -48,8 +82,16 @@ gemini extensions install https://github.com/lhanusov/keycloak-ai-skills
 <details>
 <summary>IBM Bob Shell</summary>
 
+Install:
+
 ```bash
 bob extensions install https://github.com/lhanusov/keycloak-ai-skills
+```
+
+Upgrade an existing installation:
+
+```bash
+bob extensions update keycloak-ai-skills
 ```
 
 </details>
@@ -58,7 +100,7 @@ For manual downloads, Bob IDE, or a skill that does not appear, see [installatio
 
 ## Run a skill
 
-Start a new session after installation. Enter the prompt in your AI client's chat, replacing `<pr-url>` with the pull request URL.
+Start a new session after installing or upgrading. Enter the prompt in your AI client's chat, replacing `<pr-url>` with the pull request URL.
 
 **Codex**
 

@@ -56,7 +56,7 @@ Search coverage: {{sources, queries, open/closed coverage, date, access gaps}}.
 
 ## Proposed tracker changes — draft, when applicable
 
-{{For the security workflow, record metadata actually checked and distinguish issue types from labels. Omit this section when no tracker changes are relevant. If metadata is inaccessible, describe the intended transition and the verification needed without inventing names.}}
+{{Record metadata actually checked and distinguish issue types from labels. Omit this section when no tracker changes are relevant. If metadata is inaccessible, describe the intended transition and the verification needed without inventing names.}}
 
 | Field / action | Current state | Proposed change | Rationale / prerequisite |
 | --- | --- | --- | --- |

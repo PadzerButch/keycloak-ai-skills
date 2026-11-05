@@ -1,6 +1,6 @@
 # Installation
 
-Use the [client installation commands](../README.md#quick-start), then start a new session. To get newly released skills, update the plugin and start another session.
+Use the [install or upgrade commands for your client](../README.md#quick-start), then start a new session to load the new version.
 
 ## Manual download
 
@@ -31,4 +31,4 @@ Other Agent Skills clients can use the same skill folders through their own inst
 
 Passing repository checks does not confirm that your client has loaded the skills.
 
-Client documentation: [Codex plugins](https://developers.openai.com/plugins/build/plugins), [Claude plugins](https://code.claude.com/docs/en/plugins-reference), [Copilot plugins](https://docs.github.com/en/copilot/concepts/customizations/plugins), [Gemini extensions](https://geminicli.com/docs/extensions/reference/), and [Bob IDE skills](https://bob.ibm.com/docs/ide/features/skills).
+Client documentation: [Codex plugins](https://developers.openai.com/plugins/build/plugins), [Claude plugin commands](https://code.claude.com/docs/en/plugins/cli-reference), [Copilot plugin commands](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-plugin-reference), [Gemini extensions](https://geminicli.com/docs/extensions/reference/), and [Bob IDE skills](https://bob.ibm.com/docs/ide/features/skills).

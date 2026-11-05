@@ -20,7 +20,7 @@ Include the affected version, deployment details, and reproducer when available.
 Use triage-cve to assess <report>, check related issues, and draft an internal handoff and a public-safe reply.
 ```
 
-Specify the intended audience and whether the report is private. Keep confidential evidence in authorized private sources. The assessment distinguishes security impact, CVE status, severity, urgency, and disclosure handling. For the security-tracker workflow, current authorized handling policy access may be needed for tracker recommendations.
+Specify the intended audience and whether the report is private. Keep confidential evidence in authorized private sources. The assessment distinguishes security impact, CVE status, severity, urgency, and disclosure handling. Tracker recommendations use verified metadata and the applicable security policy.
 
 ## Implement a fix
 

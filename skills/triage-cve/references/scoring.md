@@ -7,7 +7,7 @@ Use the selected version's official definitions and calculator:
 
 Assess one coherent attack scenario at a time. Name the vulnerable system, attacker starting privileges, required user action, configuration, and resulting impact. Do not combine incompatible assumptions to maximize severity. CVSS expresses technical severity; explain deployment exposure and remediation priority separately.
 
-Record why the selected CVSS version applies. For the security-tracker workflow, check the current handling policy before applying score-based handling rules. Where it specifies only CVSS v3, use v3.1 and state that interpretation unless a more specific requirement is available. Do not apply a v3 threshold to a v4 score or translate scores between versions. If a user also requests a different version, keep the assessments distinct.
+Record why the selected CVSS version applies. Verify the applicable policy before applying score-based handling rules. Where a requirement specifies only CVSS v3, use v3.1 and state that interpretation unless a more specific requirement is available. Do not apply a v3 threshold to a v4 score or translate scores between versions. If a user also requests a different version, keep the assessments distinct.
 
 Keep the CVSS severity band, Product Security's qualitative rating, and the repository's severity field separate. Propose a mapping only when supported by the applicable policy or an authoritative assessment; otherwise mark the project rating pending. A numerical score does not establish embargo status, CVE eligibility, or permission to publish.
 

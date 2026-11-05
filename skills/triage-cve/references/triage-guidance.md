@@ -1,6 +1,6 @@
 # Triage guidance and applicability
 
-Use this reference when general triage practice is requested or project guidance leaves a decision unresolved. These sources inform the assessment; they do not replace the affected project's policy, handling policy, or applicable vendor process. Record source dates and distinguish recommendations from project requirements. Consult only the sources relevant to the decision.
+Use this reference when general triage practice is requested or project guidance leaves a decision unresolved. These sources inform the assessment; they do not replace the affected project's policy or applicable vendor process. Record source dates and distinguish recommendations from project requirements. Consult only the sources relevant to the decision.
 
 | Source | Useful guidance for this skill | Applicability |
 | --- | --- | --- |
