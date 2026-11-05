@@ -54,13 +54,25 @@ bob extensions install https://github.com/lhanusov/keycloak-ai-skills
 
 </details>
 
-Start a new session, then ask:
+For manual downloads, Bob IDE, or a skill that does not appear, see [installation](docs/installation.md).
+
+## Run a skill
+
+Start a new session after installation. Enter the prompt in your AI client's chat, replacing `<pr-url>` with the pull request URL.
+
+**Codex**
 
 ```text
-Use review-pr to review <pr-url> and draft a review.
+$review-pr Review <pr-url> and draft a review.
 ```
 
-For manual downloads, Bob IDE, or discovery problems, see [installation](docs/installation.md).
+**Claude Code**
+
+```text
+/keycloak-ai-skills:review-pr Review <pr-url> and draft a review.
+```
+
+For other supported clients, ask `Use review-pr to review <pr-url>.` Replace `review-pr` with any skill below.
 
 ## Available skills
 
@@ -72,12 +84,12 @@ For manual downloads, Bob IDE, or discovery problems, see [installation](docs/in
 | Review a change | [review-pr](skills/review-pr/SKILL.md) | `Use review-pr to review <pr-url>.` |
 | Create a skill | [add-skill](skills/add-skill/SKILL.md) | `Use add-skill to create a skill for <task>.` |
 
-Provide an issue, PR, or report and any relevant checkout or version. Triage and review produce drafts; `fix-issue` changes local code and runs checks. Publishing and external changes require authorization.
+Triage and review produce drafts; `fix-issue` edits your checkout and runs checks. Posting, publishing, and changes to live systems require your authorization.
 
 ## Further documentation
 
 - [Installation and manual downloads](docs/installation.md)
-- [Usage, invocation syntax, and advanced examples](docs/usage.md)
+- [More examples and review modes](docs/usage.md)
 - [Contributing, validation, and releases](CONTRIBUTING.md)
 
 ## License

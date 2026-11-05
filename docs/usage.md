@@ -1,18 +1,10 @@
 # Using the skills
 
-Choose a skill from the [README](../README.md#available-skills), provide the issue, PR, or report, and add the relevant version or checkout. URLs, repository-qualified issue numbers, and pasted evidence are supported where applicable. The skills use available repository/tracker tools and report access or validation gaps.
+Choose a skill from the [README](../README.md#available-skills) and provide the issue, PR, or report. Add the relevant version or checkout when known. You can supply a URL, a repository-qualified issue number, or pasted evidence.
 
 ## Invocation
 
-You can request a skill by name in ordinary language. For explicit invocation:
-
-| Client | Example |
-| --- | --- |
-| Codex | `$review-pr` |
-| Claude Code | `/keycloak-ai-skills:review-pr` |
-| Other supported clients | `Use review-pr to review <pr-url>.` |
-
-Replace `review-pr` with the desired skill name. Start a new session after installing or updating the collection.
+Use the [Codex and Claude Code prompts](../README.md#run-a-skill), replacing `review-pr` with the desired skill name. The examples below use plain-language requests that you can also enter directly in supported clients.
 
 ## Investigate a bug
 
@@ -44,7 +36,7 @@ Provide a target checkout or revision. The skill traces the root cause, reuses s
 Use review-pr in feature mode to review <pr-url> against <design-or-issue-url>.
 ```
 
-Provide a PR URL or a diff with base/head revisions and issue or design context. Optional modes are `bug`, `feature`, `hardening`, and `vulnerability`; otherwise the skill selects relevant checks. Feature mode covers enhancements and new capabilities. Reviews assess requirements, architecture, completeness, tests, compatibility, and relevant security controls. Vulnerability review does not require a CVE or a separate triage assessment.
+Provide a PR URL or a diff with base/head revisions and issue or design context. The skill selects relevant checks automatically. To guide its focus, request `bug`, `feature` (including enhancements), `hardening`, or `vulnerability` mode. A CVE or prior triage assessment is not required.
 
 ## Create a skill
 
@@ -56,6 +48,6 @@ Describe the task, expected result, and target client or location when known. Co
 
 ## Drafts and changes
 
-Triage and review return assessments and comment drafts. A fix request includes local implementation and validation. Posting comments, triggering bots, changing tracker state, publishing, or modifying live systems requires authorization for the action and destination. Existing authorization is honored.
+Triage and review return assessments and comment drafts. A fix request includes local implementation and validation. Posting comments, triggering bots, changing tracker state, publishing, or modifying live systems requires your authorization.
 
 For the detailed decision criteria, follow the skill links in the README. The [triage guidance](../skills/triage-bug/references/triage-guidance.md) and [review guidance](../skills/review-pr/references/review-guidance.md) explain which project requirements and external recommendations apply.

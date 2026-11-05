@@ -1,6 +1,6 @@
 # Installation
 
-Use the [client installation commands](../README.md#quick-start) to install the collection. Start a new session after installing or updating it. New collection skills become available after the updated plugin is released and installed.
+Use the [client installation commands](../README.md#quick-start), then start a new session. To get newly released skills, update the plugin and start another session.
 
 ## Manual download
 
@@ -11,7 +11,7 @@ sha256sum --check keycloak-ai-skills-X.Y.Z.tar.gz.sha256
 tar -xzf keycloak-ai-skills-X.Y.Z.tar.gz
 ```
 
-These verification commands require `sha256sum` and `tar`. The extracted directory contains the plugin manifests and `skills/`. Extraction alone does not install or activate the skills: use your client's local plugin installer or copy the desired standalone skill folder into its supported discovery directory, preserving the skill's references, assets, and scripts.
+These commands require `sha256sum` and `tar`. After extracting, install the directory with your client's local plugin installer, or copy an entire skill folder into its supported skill directory. Include the skill's references, assets, and scripts.
 
 For standalone skill locations, see [client support](../skills/add-skill/references/client-support.md). Keep hidden client integration directories when installing the complete plugin.
 
@@ -19,7 +19,7 @@ For standalone skill locations, see [client support](../skills/add-skill/referen
 
 The Bob Shell extension command installs the Shell integration. Bob IDE uses separate [skill discovery](https://bob.ibm.com/docs/ide/features/skills); install standalone skill folders through the IDE's supported mechanism.
 
-Other Agent Skills clients can use the same skill folders through their own installer. Follow the target project's conventions and confirm the installed client's discovery directory.
+Other Agent Skills clients can use the same skill folders through their own installer.
 
 ## If a skill is unavailable
 
@@ -29,6 +29,6 @@ Other Agent Skills clients can use the same skill folders through their own inst
 4. Try the explicit [invocation syntax](usage.md#invocation).
 5. For a standalone skill, check its location against [client support](../skills/add-skill/references/client-support.md).
 
-Installation, discovery, and invocation are separate steps. Repository validation checks packaging and local references; it does not establish that a particular client has loaded a skill.
+Passing repository checks does not confirm that your client has loaded the skills.
 
 Client documentation: [Codex plugins](https://developers.openai.com/plugins/build/plugins), [Claude plugins](https://code.claude.com/docs/en/plugins-reference), [Copilot plugins](https://docs.github.com/en/copilot/concepts/customizations/plugins), [Gemini extensions](https://geminicli.com/docs/extensions/reference/), and [Bob IDE skills](https://bob.ibm.com/docs/ide/features/skills).
