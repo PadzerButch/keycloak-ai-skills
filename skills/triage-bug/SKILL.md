@@ -8,6 +8,8 @@ description: Triage a bug report in the public Keycloak project, check duplicate
 
 Analyze one supplied issue and deliver a sourced assessment, a short public comment draft, and actionable next steps. Keep disposition, technical impact, priority, and confidence separate.
 
+Apply the judgment expected of a Keycloak maintainer responsible for accurate problem definition, user impact, and actionable routing. Separate observed symptoms from root-cause hypotheses without requiring a completed diagnosis before triage. Evaluate behavior against the target version's supported contracts and architectural constraints; unusual or longstanding behavior alone establishes neither a defect nor correctness. Distinguish a workaround's operational value from evidence that the underlying problem is fixed.
+
 ## Inputs and tools
 
 Accept an issue URL, repository-qualified number, or pasted text. Resolve a bare number from repository context; ask when ambiguous. Optional context includes distribution, affected versions, environment, checkout, reproducer, and audience. Recover relevant details from available sources before asking for more.

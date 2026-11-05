@@ -1,12 +1,13 @@
 # Keycloak AI Skills
 
-Reusable AI skills for Keycloak skill authoring, bug and security triage, and pull request review. The current package version is `0.3.0`.
+Reusable AI skills for Keycloak skill authoring, bug and security triage, fix implementation, and pull request review. The current package version is `0.4.0`.
 
 | Skill | Purpose |
 | --- | --- |
 | [add-skill](skills/add-skill/SKILL.md) | Turn a task description into a reusable skill. |
 | [triage-bug](skills/triage-bug/SKILL.md) | Triage a public bug report, check duplicates and fixes, follow Keycloak's priority flow, and draft a report, comment, and next actions. |
 | [triage-cve](skills/triage-cve/SKILL.md) | Analyze an issue, check duplicates, classify security impact, assess CVSS, urgency, and embargo handling, and draft a report, comment, and workflow handoff. |
+| [fix-issue](skills/fix-issue/SKILL.md) | Implement and validate root-cause fixes for bugs, security weaknesses, and vulnerabilities while preserving supported behavior and sound architecture. |
 | [review-pr](skills/review-pr/SKILL.md) | Review fixes, enhancements, and new features for requirements, specification applicability, completeness, regressions, and valid findings; draft a review. |
 
 The shared instructions follow [Agent Skills](https://agentskills.io/specification). The root `plugin.json` follows [Agent Plugins 1.0](https://agent-plugins.org/specification). Small client integrations all use the same `skills/` directory.
@@ -80,6 +81,16 @@ Use triage-cve to analyze <issue-url>, check for duplicates, and draft a report 
 
 Triage also records urgency, disclosure/embargo reasoning, and the next responsible role or team. For the security-tracker workflow, it drafts tracker changes and a handoff using the current handling policy and authorized sources. It keeps CVSS, project severity, CVE status, and disclosure decisions distinct; proposed actions require authorization before execution.
 
+To implement a fix, provide an issue or report and a target checkout or revision:
+
+```text
+Use fix-issue to fix <issue-url> in <checkout> on <branch>, including regression coverage.
+```
+
+The skill establishes the violated invariant, reuses suitable Keycloak abstractions, and fixes the cause across affected paths. It supports bugs, hardening, and vulnerabilities with or without a CVE or prior triage. It discusses unresolved changes to supported contracts, implements routine choices autonomously, and reports actual validation and remaining gaps. Necessary local implementation and tests are part of the task; publication and live changes require authorization for those actions.
+
+In Codex, invoke `$fix-issue`; in Claude Code, use `/keycloak-ai-skills:fix-issue`.
+
 To review a proposed fix, enhancement, or new feature, provide a PR URL or a diff with base/head revisions and issue/design context:
 
 ```text
@@ -106,7 +117,7 @@ When releasing, keep the version identical in `plugin.json`, `.claude-plugin/plu
 
 Common evidence, security-handling, and duplicate-search guidance is maintained in `shared/`. Edit those sources and run `python scripts/sync-shared.py --write` to refresh the checked-in references inside each consuming skill. Commit the source and copies together. Each skill remains installable on its own; consumers load only their local references. CI and release checks reject missing or stale copies. No synchronization is needed when installing or using a skill.
 
-Use the [offline scenario guide](docs/skill-validation.md) when changing triage or review decisions; structural tests alone do not validate model behavior.
+Use the [offline scenario guide](docs/skill-validation.md) when changing triage, implementation, or review decisions; structural tests alone do not validate model behavior.
 
 With Python 3.10+:
 
@@ -121,9 +132,9 @@ CI runs these checks on Linux and Windows with Python 3.10 and 3.14. The validat
 
 ## Publish
 
-Prepare and commit the version changes described above, then push them to the default branch. To publish a release, open **Actions → Release → Run workflow**, select the default branch, and enter the committed version without a `v` prefix (for example, `0.3.0`). The workflow supports stable `X.Y.Z` versions.
+Prepare and commit the version changes described above, then push them to the default branch. To publish a release, open **Actions → Release → Run workflow**, select the default branch, and enter the committed version without a `v` prefix (for example, `0.4.0`). The workflow supports stable `X.Y.Z` versions.
 
-The manual workflow verifies all four manifest versions and the README version, runs package validation and tests on Linux and Windows with Python 3.10 and 3.14, then tags the exact validated commit as `vX.Y.Z` and publishes a GitHub Release with generated release notes. GitHub provides the source archives. It uses the built-in `GITHUB_TOKEN`; no additional release secret is required. Repository rules must allow that token to create the release tag.
+The manual workflow verifies all four manifest versions and the README version, runs package validation and tests on Linux and Windows with Python 3.10 and 3.14, then archives the exact validated commit as `keycloak-ai-skills-X.Y.Z.tar.gz`. The tarball contains the committed repository under a `keycloak-ai-skills-X.Y.Z/` directory, including the hidden client integration files. It is uploaded as a workflow artifact and attached to the GitHub Release, which tags the same commit as `vX.Y.Z` and includes generated release notes. It uses the built-in `GITHUB_TOKEN`; no additional release secret is required. Repository rules must allow that token to create the release tag.
 
 If publishing fails after tag creation, rerun the original workflow run so it uses the same commit. An existing tag is accepted only when it points to that commit; an existing release causes publication to fail without replacing it. The workflow must first be present on the default branch to appear in the manual Actions menu.
 

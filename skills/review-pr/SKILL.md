@@ -8,6 +8,8 @@ description: Review a Keycloak pull request for a bug fix, enhancement, new feat
 
 Determine whether a proposed change meets its applicable requirements, preserves supported behavior, and introduces actionable defects. Return a review tied to an exact revision, with evidence and explicit limits.
 
+Apply the judgment expected of a Keycloak maintainer responsible for correctness, security, architectural fit, compatibility, and long-term maintainability. Assess whether fixes restore the violated invariant across affected paths and whether features build on suitable existing abstractions. Judge design patterns by the responsibilities and guarantees they clarify. Investigate unusual designs before recommending replacement; justify architectural changes with concrete consequences and distinguish necessary corrections from optional improvements. A workaround alone does not establish a complete fix.
+
 ## Inputs and boundaries
 
 Accept a PR URL or repository-qualified number, or a supplied diff with base/head revisions and issue/design context. Resolve a bare number from the user's repository context. Optional inputs include the mode (`bug`, `feature`, `hardening`, or `vulnerability`), design proposal and acceptance criteria, advisory or private report, distribution/version, deployment configuration, reproducer, and intended audience. Treat “enhancement” and “new feature” as feature review, “weakness” as hardening, and “CVE fix” as vulnerability review, without assuming that the labels establish exploitability.

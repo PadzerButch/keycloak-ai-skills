@@ -75,6 +75,26 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Create release tarball
+        id: package
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          package_name="keycloak-ai-skills-${RELEASE_VERSION}"
+          tarball="${RUNNER_TEMP}/${package_name}.tar.gz"
+          git archive --format=tar.gz --prefix="${package_name}/" \
+            --output="$tarball" "$RELEASE_SHA"
+          printf 'path=%s\n' "$tarball" >> "$GITHUB_OUTPUT"
+      - name: Upload release tarball
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          path: ${{ steps.package.outputs.path }}
+          archive: false
+          if-no-files-found: error
+          overwrite: true
       - name: Tag the validated commit and publish release
         shell: bash
         env:
@@ -82,6 +102,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_SHA: ${{ github.sha }}
+          RELEASE_TARBALL: ${{ steps.package.outputs.path }}
         run: |
           set -euo pipefail
           tag="v${RELEASE_VERSION}"
@@ -95,4 +116,4 @@ jobs:
             gh api --method POST "repos/$GH_REPO/git/refs" \
               -f "ref=refs/tags/$tag" -f "sha=$RELEASE_SHA"
           fi
-          gh release create "$tag" --verify-tag --title "$tag" --generate-notes
+          gh release create "$tag" "$RELEASE_TARBALL" --verify-tag --title "$tag" --generate-notes

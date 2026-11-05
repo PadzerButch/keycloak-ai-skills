@@ -68,7 +68,7 @@ class SharedTests(unittest.TestCase):
                     self.assertFalse((package / "skills").exists())
 
     def test_skills_relocate_without_shared_source_or_sibling_skills(self):
-        for name in ("add-skill", "triage-bug", "triage-cve", "review-pr"):
+        for name in ("add-skill", "triage-bug", "triage-cve", "review-pr", "fix-issue"):
             with self.subTest(skill=name), tempfile.TemporaryDirectory() as standalone:
                 target = Path(standalone) / name
                 shutil.copytree(ROOT / "skills" / name, target)

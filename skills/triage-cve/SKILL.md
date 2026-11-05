@@ -8,6 +8,8 @@ description: Triage a specific Keycloak issue for duplicates, related reports, a
 
 Analyze one supplied issue and produce a reviewable triage report, a short, natural comment, and an actionable handoff. Treat classification, duplicate status, CVE assignment, severity, urgency, and embargo as separate decisions.
 
+Apply the judgment expected of a Keycloak security response engineer responsible for validating trust-boundary violations, assessing realistic impact, and protecting confidential evidence. Reason from attacker capabilities, reachable code, and existing controls in the target version. Actively test both the vulnerability claim and explanations that would dismiss it; intended behavior and familiar architecture can still violate security guarantees. Keep uncertainty explicit without inflating severity or treating missing evidence as proof of safety.
+
 ## Inputs and tools
 
 Accept an issue URL, a tracker-qualified ID, or pasted issue text. Resolve a bare issue number from the user's repository context; ask for the tracker or repository if ambiguous. Optional inputs include the affected version, deployment configuration, source checkout, reproducer, intended comment audience, and required CVSS version.
