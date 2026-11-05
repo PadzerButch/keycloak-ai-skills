@@ -14,6 +14,13 @@ The shared instructions follow [Agent Skills](https://agentskills.io/specificati
 
 ## Install
 
+Download the versioned tarball and its accompanying `.tar.gz.sha256` file from the [latest release](https://github.com/lhanusov/keycloak-ai-skills/releases/latest). Save both files in the same directory and verify the download before extracting it, replacing `X.Y.Z` with the downloaded version:
+
+```bash
+sha256sum --check keycloak-ai-skills-X.Y.Z.tar.gz.sha256
+tar -xzf keycloak-ai-skills-X.Y.Z.tar.gz
+```
+
 Publish this repository before using these GitHub installation commands. Use a current client with plugin or extension support.
 
 Codex:
@@ -134,7 +141,7 @@ CI runs these checks on Linux and Windows with Python 3.10 and 3.14. The validat
 
 Prepare and commit the version changes described above, then push them to the default branch. To publish a release, open **Actions → Release → Run workflow**, select the default branch, and enter the committed version without a `v` prefix (for example, `0.4.0`). The workflow supports stable `X.Y.Z` versions.
 
-The manual workflow verifies all four manifest versions and the README version, runs package validation and tests on Linux and Windows with Python 3.10 and 3.14, then archives the exact validated commit as `keycloak-ai-skills-X.Y.Z.tar.gz`. The tarball contains the committed repository under a `keycloak-ai-skills-X.Y.Z/` directory, including the hidden client integration files. It is uploaded as a workflow artifact and attached to the GitHub Release, which tags the same commit as `vX.Y.Z` and includes generated release notes. It uses the built-in `GITHUB_TOKEN`; no additional release secret is required. Repository rules must allow that token to create the release tag.
+The manual workflow verifies all four manifest versions and the README version, runs package validation and tests on Linux and Windows with Python 3.10 and 3.14, then archives the exact validated commit as `keycloak-ai-skills-X.Y.Z.tar.gz` and generates its `.tar.gz.sha256` checksum file. The tarball contains the committed repository under a `keycloak-ai-skills-X.Y.Z/` directory, including the hidden client integration files. Both files are uploaded as workflow artifacts and attached to the GitHub Release, which tags the same commit as `vX.Y.Z` and includes generated release notes. It uses the built-in `GITHUB_TOKEN`; no additional release secret is required. Repository rules must allow that token to create the release tag.
 
 If publishing fails after tag creation, rerun the original workflow run so it uses the same commit. An existing tag is accepted only when it points to that commit; an existing release causes publication to fail without replacing it. The workflow must first be present on the default branch to appear in the manual Actions menu.
 

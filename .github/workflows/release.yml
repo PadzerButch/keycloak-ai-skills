@@ -75,7 +75,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Create release tarball
+      - name: Create release tarball and checksum
         id: package
         shell: bash
         env:
@@ -87,11 +87,22 @@ jobs:
           tarball="${RUNNER_TEMP}/${package_name}.tar.gz"
           git archive --format=tar.gz --prefix="${package_name}/" \
             --output="$tarball" "$RELEASE_SHA"
+          checksum="${tarball}.sha256"
+          cd "$RUNNER_TEMP"
+          sha256sum "${package_name}.tar.gz" > "$checksum"
           printf 'path=%s\n' "$tarball" >> "$GITHUB_OUTPUT"
+          printf 'checksum=%s\n' "$checksum" >> "$GITHUB_OUTPUT"
       - name: Upload release tarball
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           path: ${{ steps.package.outputs.path }}
+          archive: false
+          if-no-files-found: error
+          overwrite: true
+      - name: Upload release checksum
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          path: ${{ steps.package.outputs.checksum }}
           archive: false
           if-no-files-found: error
           overwrite: true
@@ -103,6 +114,7 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
           RELEASE_SHA: ${{ github.sha }}
           RELEASE_TARBALL: ${{ steps.package.outputs.path }}
+          RELEASE_CHECKSUM: ${{ steps.package.outputs.checksum }}
         run: |
           set -euo pipefail
           tag="v${RELEASE_VERSION}"
@@ -116,4 +128,5 @@ jobs:
             gh api --method POST "repos/$GH_REPO/git/refs" \
               -f "ref=refs/tags/$tag" -f "sha=$RELEASE_SHA"
           fi
-          gh release create "$tag" "$RELEASE_TARBALL" --verify-tag --title "$tag" --generate-notes
+          gh release create "$tag" "$RELEASE_TARBALL" "$RELEASE_CHECKSUM" \
+            --verify-tag --title "$tag" --generate-notes
