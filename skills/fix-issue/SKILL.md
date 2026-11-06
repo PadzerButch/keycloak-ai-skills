@@ -18,6 +18,8 @@ A request to fix an issue authorizes the necessary local implementation and vali
 
 ## Establish the defect and its ownership
 
+When Ripwire is available and useful, follow [optional Ripwire assistance](references/ripwire.md) to locate enforcement code, trace affected callers, and identify candidate regression tests. Otherwise use the usual repository tools; Ripwire is not required.
+
 Trace the observed failure through entry points, callers, implementations, state, and existing safeguards. Explain the trigger, root cause, and violated invariant or contract, with code and requirement references. Reproduce the defect when feasible; distinguish a product failure from a setup failure, unsupported use, or an unverified report. If the evidence does not establish a defect, explain what it does establish and the smallest missing check instead of inventing a patch.
 
 Verify applicable protocol requirements against the specification version, participant role, and profile. Explain conflicts between documentation, code, tests, and specifications. Existing behavior or passing tests alone do not establish the intended contract or a sound security guarantee.

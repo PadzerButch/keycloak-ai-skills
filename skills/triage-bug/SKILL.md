@@ -22,6 +22,8 @@ Read [Keycloak's public workflow](references/keycloak-workflow.md) and refresh r
 
 ### 1. Establish the evidence
 
+When a local checkout and Ripwire are available and useful, follow [optional Ripwire assistance](references/ripwire.md) to locate symptom-related code and inspect callers or candidate fixes. Otherwise use the usual repository tools; Ripwire is not required.
+
 Read the body, relevant comments and timeline, linked reports, PRs, and reproduction evidence. Record issue identity, retrieval date, current state, existing decisions, distribution, version/build, component, and feature maturity. Distinguish upstream Keycloak from Red Hat build of Keycloak and other downstream distributions.
 
 Explain expected versus observed behavior, with matching-version documentation or code references. Consult release and migration notes before calling an upgrade difference a regression. For protocol claims, check the applicable specification version, section, and implementation role. Distinguish product defects, documentation defects, configuration problems, intentional changes, and custom-extension incompatibility; a help request can reveal a real defect.

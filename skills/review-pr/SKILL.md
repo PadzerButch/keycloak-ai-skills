@@ -26,6 +26,8 @@ Read applicable repository instructions, `CONTRIBUTING.md`, `SECURITY.md`, and r
 
 Record the repository, PR, target branch, base and head SHAs, merge base, and assessment date. Review the merge-base-to-head diff and trace affected callers, implementations, validation, and tests beyond the changed lines. For supplied patches, state unavailable revision/context information. Recheck the head before finalizing when possible; if it changed, review the delta or clearly limit conclusions to the recorded revision.
 
+When Ripwire is available and useful, follow [optional Ripwire assistance](references/ripwire.md) to investigate affected callers, change impact, and candidate tests at the reviewed revision. Otherwise use the usual repository tools; Ripwire is not required.
+
 For fixes, explain the original trigger, actual versus expected behavior, and root cause. Establish whether the report describes a defect, expected behavior, unsupported usage, misconfiguration, or an enhancement. For features and enhancements, establish the user problem, intended capability, acceptance criteria, design rationale, and agreed exclusions; distinguish explicit requirements from inferred expectations without inventing scope. Check whether the proposed behavior is itself valid. Intentional changes can still break supported contracts; misconfiguration does not automatically excuse a violation of documented guarantees or safe defaults.
 
 ### 2. Verify specification applicability

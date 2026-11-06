@@ -8,6 +8,7 @@ CONSUMERS = {
     "evidence.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue"),
     "security-handling.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue"),
     "duplicate-search.md": ("triage-bug", "triage-cve"),
+    "ripwire.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue"),
 }
 
 

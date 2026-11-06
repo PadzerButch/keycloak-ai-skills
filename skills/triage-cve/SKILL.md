@@ -22,6 +22,8 @@ For questions about general triage practice or gaps in project guidance, read [t
 
 ### 1. Establish the evidence
 
+When a local checkout and Ripwire are available and useful, follow [optional Ripwire assistance](references/ripwire.md) to locate relevant entry points and trace callers and safeguards. Otherwise use the usual repository tools; Ripwire is not required.
+
 Read the issue body, relevant comments, linked pull requests, fixes, and reproduction evidence. Record issue identity, retrieval date, component, reported versions, and current status.
 
 Establish distribution, release/commit, feature maturity, and configuration. Identify the attacker, required privileges, realm/client boundaries, expected versus actual behavior, and concrete confidentiality, integrity, or availability impact.

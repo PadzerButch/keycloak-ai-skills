@@ -1,6 +1,6 @@
 # Keycloak AI Skills
 
-AI skills to investigate Keycloak issues, assess security reports, implement fixes, and review pull requests. The current package version is `0.4.0`.
+AI skills to investigate Keycloak issues, assess security reports, implement fixes, and review pull requests. The current package version is `0.4.1`.
 
 ## Quick start
 
