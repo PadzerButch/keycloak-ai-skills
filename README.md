@@ -123,6 +123,7 @@ For other supported clients, ask `Use review-pr to review <pr-url>.` Replace `re
 | Investigate a bug | [triage-bug](skills/triage-bug/SKILL.md) | `Use triage-bug to assess <issue-url>.` |
 | Assess security impact | [triage-cve](skills/triage-cve/SKILL.md) | `Use triage-cve to assess <report>.` |
 | Implement a fix | [fix-issue](skills/fix-issue/SKILL.md) | `Use fix-issue to fix <issue-url> in <checkout>.` |
+| Migrate an Arquillian test | [migrate-test](skills/migrate-test/SKILL.md) | `Use migrate-test to migrate <test-class-name>.` |
 | Review a change | [review-pr](skills/review-pr/SKILL.md) | `Use review-pr to review <pr-url>.` |
 | Create a skill | [add-skill](skills/add-skill/SKILL.md) | `Use add-skill to create a skill for <task>.` |
 

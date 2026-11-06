@@ -5,10 +5,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 CONSUMERS = {
-    "evidence.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue"),
+    "evidence.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue", "migrate-test"),
     "security-handling.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue"),
     "duplicate-search.md": ("triage-bug", "triage-cve"),
-    "ripwire.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue"),
+    "ripwire.md": ("triage-bug", "triage-cve", "review-pr", "fix-issue", "migrate-test"),
 }
 
 
