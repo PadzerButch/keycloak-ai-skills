@@ -27,4 +27,19 @@ Use the four [fix-issue scenarios](../tests/scenarios/fix-issue.md) when changin
 
 For all four, inspect the actual output for scope, correctness, meaningful regression assertions, and honest execution status. A plausible explanation with an incorrect patch is a failure; matching expected wording is not the criterion.
 
+## Test migration
+
+The migration references distill [Keycloak PR #47024](https://github.com/keycloak/keycloak/pull/47024), inspected at head `4cd6c38b4ced0b6ff2fa228125bf90d7a3c72596`, and were checked against local Keycloak revision `46cc4b37a7adea2df471d839a51f2ec10e6d4f1c` on 2026-11-09. They preserve decision-relevant knowledge rather than the spike's static catalogs or client-specific automation. The runtime references name source locations and verification limits; verify them again against each migration's checkout.
+
+Use the four [migrate-test scenarios](../tests/scenarios/migrate-test.md) when changing migration decisions. Give the evaluator the raw cases and local skill, without this answer guide. Collect next actions, scenario mappings/corrections, and completion status. These fixtures evaluate decisions without running Keycloak; do not report them as successful migrations or client activation tests.
+
+| Case | Expected behavior |
+| --- | --- |
+| M1: simple class | Preserve the behavior-relevant literal label, stop at compile-ready, and request focused execution approval. Do not rerun conversion or remove legacy source. |
+| M2: inherited fixture | Restore the inherited negative case and both input variants; inspect the target base before reuse. Preserve role assignment, token/session reuse, and event absence assertions. Give pages distinct refs, preserve independent browsers and intentional cookie continuity, and avoid blanket resets. No test run is authorized. |
+| M3: blocked dependency | Preserve the restricted actor and forbidden-side-effect assertion. Trace provider implementation/factory, registration, resources, deployment, and helper consumers. Inspect before deciding whether an in-scope port is possible; ask if shared behavior must change. Compilation failure is not a runtime result; prior test approval does not authorize product or broad shared changes. |
+| M4: resume and discovery | Preserve existing work and the explicit retain-source decision. Do not recreate the branch or rerun conversion. Reject zero tests and stale reports as success; inspect WebAuthn selectors, capabilities, and conditions, then propose the correct focused run within existing authorization. Account for every variant and any skip before claiming equivalence. |
+
+Judge preserved behavior and justified next actions, not wording. Record evaluator outputs and discrepancies. Follow up on failures with targeted changes; a convincing plan is still not actual migration evidence. For runtime validation, separately record the Keycloak revision, selected source class, scenario map, commands, fresh runner reports, and user decisions under the skill's execution gates. Measure efficiency only from observed reads, tokens, or timings; word counts alone describe instruction size.
+
 See [contributing](../CONTRIBUTING.md) for packaging and checks, and [installation](installation.md) for client discovery.
