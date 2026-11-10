@@ -1,61 +1,84 @@
 ---
 name: migrate-test
 license: Apache-2.0
-description: Migrate one named Keycloak Arquillian test from testsuite/integration-arquillian/tests/base to the current JUnit framework using the repository migration script, then compile and validate it with user-approved test execution.
+description: Migrate or resume migrating one named Keycloak Arquillian test to the current JUnit framework using the repository migration script, preserving behavior, assertions and suite coverage with minimal changes and user-approved test execution.
 ---
 
 # Migrate a Keycloak Arquillian test
 
-Act as a test lead preserving observable behavior while adopting the checked-out framework's conventions. Migrate one named test with the repository script and only the support code it requires. Repository examples inform implementation; they do not override the user's stated preferences. Do not change product code, perform unrelated refactoring, commit, push, or open a PR without separate instructions. Resolve uncertainty from repository evidence; ask when a behavioral decision or unsafe state remains.
+Act as a test lead preserving observable behavior while adopting the checked-out framework's conventions. Migrate one concrete test and only its necessary support code and suite registrations. Make the smallest changes supported by the checked-out framework and nearby migrated tests. Do not change product code, perform unrelated refactoring, commit, push, or open a PR without separate instructions. Honor the user's preferences and authorization already given.
 
-## 1. Establish the revision and protect existing work
+## 1. Investigate
 
-Accept a class name without requiring a path. Locate the intended Keycloak checkout, read applicable repository instructions, and resolve exactly one concrete test under `testsuite/integration-arquillian/tests/base/src/test/java/org/keycloak/testsuite/`. For missing, ambiguous, or abstract-only matches, explain the candidates and ask for direction.
+Locate the intended Keycloak checkout, read applicable instructions, and resolve the named class under `testsuite/integration-arquillian/tests/base/src/test/java/org/keycloak/testsuite/`. Ask for direction for missing, ambiguous, or abstract-only matches.
 
-Inspect worktree status (including untracked files), branches, and `origin`. Require the intended Keycloak remote and a clean worktree; do not discard, overwrite, reset, rebase, or stash user work without permission. Fetch the latest `origin/main`, record its revision, and create `<ClassName>_Branch` directly from it. If fetching/authentication fails, the branch exists, or switching is unsafe, stop and ask; do not silently substitute a branch name or base.
+For a new migration, inspect branches, `origin`, and worktree status including untracked files. Verify the intended remote and require a clean worktree; fetch `origin/main`, record its revision, and create `<ClassName>_Branch` directly from it. If fetching fails, the branch exists, or switching is unsafe, stop and ask rather than substituting a base/name. Never discard, overwrite, reset, rebase, or stash user work without permission.
 
-After switching revisions, re-resolve the source and recheck applicable instructions, the migration script, and relevant framework evidence. Earlier paths, API assumptions, and examples are provisional until verified on this revision; repeat this check after any later revision switch.
+For an explicitly resumed migration, inspect the existing branch/base, diff, partial output and prior validation instead of creating a branch or rerunning conversion. Continue from the last evidenced stage. After any revision switch, re-resolve source, instructions, script and framework evidence.
 
-Before conversion, inspect `migration-util/migrate.sh` and its relevant helpers to establish invocation, source selection, output paths, and side effects. The expected invocation is `./migrate.sh <ClassName>` from `migration-util/`, targeting the corresponding package under `tests/base/src/test/java/org/keycloak/tests/`. If the checked-out script differs, resolve the discrepancy before running it. Check its prospective outputs for existing tracked, untracked, or ignored files and search the target feature for an equivalent migration, including renamed classes. If a target already exists, compare coverage and report whether it is complete or partial; ask how to proceed rather than overwrite it or create a duplicate.
+Inspect `migrate.sh` and its relevant helpers in the checked-out migration utility (often `tests/migration-util/`): invocation, working directory, source selection, destination and build side effects. Respect execution authorization for any tests the script runs. Check tracked, untracked and ignored output collisions and equivalent migrations, including renamed classes. Compare an existing target's coverage and ask how to proceed; do not overwrite or duplicate it. Resolve a missing script or unsupported routing before conversion.
 
-## 2. Establish behavior and dependencies
+Build a compact scenario map: **source method/variant → fixture and identity → action → assertions → target equivalent → validation status**. Include superclass tests, helpers' implicit checks, parameters, negative paths, rules, hooks and execution conditions. Preserve original purpose, behavior and assertion strength. For a negative case, identify why it fails and which fixture restrictions make that failure meaningful; a generic error from a different cause is not equivalent.
 
-Build a compact scenario map from the source, its superclass chain, and relevant helpers: inputs/variants, fixtures, action, observable assertions, and planned target equivalents. Include inherited tests, parameterized cases, negative paths, rules, setup/teardown, and enabled/disabled conditions. Preserve meaningful cases and assertion strength; mark omissions or changed expectations only when user direction or revision-specific repository evidence justifies them. An unresolved behavioral difference blocks claiming equivalence.
+Search the repository for the class name, fully qualified name, superclass and relevant package selectors in suite definitions, POMs, profiles and CI configuration. Establish whether JVM, cluster or other advanced suites register or select it; record actual membership and required updates. Do not infer membership from OIDC or a class name containing “Advanced”.
 
-Use focused file and symbol search. Start with migrated tests and reusable abstract bases in the same feature/package, then the nearest neighboring folder, broader `tests/base/` examples, and framework documentation only as needed. For example, when migrating an OIDC test, inspect relevant abstract test classes in that feature if present. Stop expanding exploration once the needed API, lifecycle, and runner decisions are supported. Record useful source locations beside decisions so conversion does not repeat discovery.
+## 2. Plan the smallest implementation
 
-Trace inherited injections, fixture ownership, hooks, and helpers before choosing a target base. Check whether a migrated base supplies the same behavior and resource configuration, including hook ordering and overrides. Reuse compatible inherited resources without shadowing or redeclaring fields. Identify missing support classes, providers, test resources, and module dependencies before conversion. Convert required support code only when its behavior is clear and the change stays within this migration; inspect its existing consumers and output collisions too. If it requires a broader migration, affects shared behavior, or cannot be resolved reliably, explain the dependency and ask for direction.
+Search same-feature migrated tests and abstract bases, then nearby folders, broader examples and framework source/docs only as needed. Prefer an existing abstract test class when its fixtures, inherited tests, helpers and hook ordering preserve the scenario map. Trace inherited resources before adding or shadowing fields. Stop exploration once API, lifecycle and runner decisions have supporting source locations.
 
-## 3. Convert and align with the framework
+For **every added injection, fixture, annotation, helper, configuration or lifecycle change**, establish:
 
-Run the verified repository migration script. Review its output and diff against the expected files and scenario map; generated code is an intermediate result. Stop to diagnose a failure, unexpected target, or ambiguous output before editing further. Do not blindly rerun the script over partial output or replace it with a broad manual rewrite.
+- Which original behavior or demonstrated framework requirement needs it?
+- Does the framework, a compatible base or an existing fixture already provide it?
+- Can defaults or a simpler supported operation preserve the behavior?
 
-Make the smallest changes supported by the checked-out framework and nearby migrated tests:
+Keep a short rationale beside non-obvious decisions in working notes. Omit additions without a demonstrated purpose. Never inject WebDriver unless the test genuinely requires direct browser operations or explicit browser configuration that existing resources do not supply. Using an OAuth helper or page alone does not justify a driver field.
 
-- Match local formatting, structure, JUnit annotations, and assertion style. Verify API signatures and configuration behavior in source; examples are patterns, not guarantees across revisions.
-- Prefer framework-managed resources and public APIs: `oauth.clientResource()` for the configured client's admin resource, `realm.admin()` for realm operations, and framework event assertions where supported. Use server-side execution only when the tested behavior needs it and explain the tradeoff.
-- Express managed realm/client/user setup through typed `RealmConfig`, `ClientConfig`, and `UserConfig` implementations and their matching builders. Use `@InjectClient(config = ...)` for configured clients and `@InjectOAuthClient(config = ...)` when configuring the OAuth helper. Move configuration-only setup into these configs; keep lifecycle methods for genuine per-test behavior.
-- Prefer `BasicRealmWithUserConfig` when its standard user fits; otherwise use default injection or the smallest necessary custom config. Do not create a config solely to preserve a realm name: use the managed realm's actual name in URLs and assertions. Replace generated legacy configuration only after accounting for behavior it supplied.
-- Use bare `@KeycloakIntegrationTest` unless the test demonstrably needs a server configuration supported by current framework evidence.
-- Check fixture creation, reset, and disposal at method/class scope, including inherited hooks. Ensure shared realms, clients, users, events, sessions, server settings, and time offsets cannot leak state or require test ordering. Verify cleanup on failure and ownership before replacing manual teardown with managed lifecycle.
-- Retain assertions for outcomes, side effects, and expected failures, including relevant event contents. Remove unused injections, page fixtures, locals, and captured event results only after checking inherited use and lifecycle effects.
+Use bare `@KeycloakIntegrationTest` and framework defaults when sufficient. Do not add scopes, custom realms, browser cleanup, lifecycle overrides or helpers merely because an example uses them. Check required support classes, providers, resources, dependencies, consumers and output collisions; ask before broader migrations or shared behavior changes.
 
-Reconcile every scenario with its target method/variant and assertions. Keep the legacy source until the removal decision in step 5.
+## 3. Consult relevant references
 
-## 4. Compile and obtain execution evidence
+Load a reference only for a requirement identified above, or an observed failure. These are conditional decision aids, not implementation templates. Verify relevant APIs and defaults on the checked-out revision; do not copy every resource or configuration in an example.
 
-Derive the narrowest supported test-compilation and focused execution commands from this revision's build configuration and guidance. Check module selection, JUnit engine, annotations, runner includes/excludes, profiles, parameter sources, and required fixtures/services. Ensure compilation actually includes the migrated source and required support code while disabling test execution; do not assume a Maven skip flag or phase has the desired behavior.
+| Identified requirement | Reference |
+| --- | --- |
+| OAuth flows, client ownership, tokens or events | [OAuth and events](references/oauth-and-events.md) |
+| Realm/user/client fixtures, inherited resources or reset timing | [Resources and lifecycle](references/resources-and-lifecycle.md) |
+| Direct browser operations, cookies, independent sessions or page migration | [UI migration](references/ui-migration.md) |
+| Rules, parameters, conditions, discovery or advanced suite membership | [JUnit and execution](references/junit-and-execution.md) |
+| Server operations, custom providers or necessary support code | [Server and support code](references/server-and-support-code.md) |
+| Failed or interrupted migration | [Migration failures](references/migration-failures.md) |
 
-Compile and fix migration-caused errors supported by framework evidence. Classify failures by the failing phase, diagnostic, and affected code: missing artifacts/services, toolchain or network problems, and unrelated module failures do not establish a migration defect. Resolve clear in-scope conversion errors; report environmental/unrelated blockers separately and ask before broader setup changes or uncertain workarounds. Do not weaken assertions or remove scenarios to obtain a pass.
+Use [evidence guidance](references/evidence.md) for uncertain external claims and [optional Ripwire](references/ripwire.md) only if difficult dependency tracing warrants it and it is already available.
 
-After successful compilation, report the command and propose the focused test command, then explicitly ask whether to run it. Wait for the user's reply; compilation is not completion. If execution is declined or unanswered, leave the migration compile-ready and unvalidated.
+## 4. Migrate
 
-When approved, run the focused test and inspect fresh runner reports, not just the exit status. Confirm the intended class, inherited tests, parameterized variants, and expected scenarios were discovered and executed; account for skips and disabled conditions. Zero discovered tests, stale reports, or silently excluded scenarios are not a pass. Diagnose discovery and migration defects within scope; use the failure classification above for blockers. Compare runtime coverage with the scenario map and report anything unverified.
+Run the verified script for a new migration and inspect its output/diff; generated code is intermediate. Diagnose failures or unexpected output before further edits. Do not blindly rerun over partial output or substitute a broad manual rewrite.
 
-## 5. Resolve legacy removal and report
+Match local formatting, JUnit conventions and assertion style; verify signatures in source. Prefer managed public APIs such as `oauth.clientResource()` and `realm.admin()` when they preserve the identity and operation under test. Express necessary configuration-only setup through supported typed configs; retain lifecycle hooks only for genuine per-test behavior. Reuse default or existing realm fixtures where suitable. Derive URLs from the managed realm instead of introducing a config solely to keep its name, except when the literal name is behavior under test.
 
-After the migrated scenarios pass, proactively ask whether to remove the corresponding legacy test source and wait for the answer. Delete it only with approval; retain it if declined or unanswered. Approval for that source does not cover other legacy files or shared helpers. Before deletion, check references and consumers; pause if removal would break dependencies or require broader changes, then review the deletion diff separately.
+Preserve success and failure assertions, side effects, event details and absence checks. Preserve restrictive fixtures, grants, scopes, redirects and actor permissions; do not broaden them to make a test pass. Verify inherited helper assertions before replacing explicit checks. Reconcile every scenario and variant with its target equivalent; unresolved differences block claiming equivalence.
 
-Completion requires the recorded branch/base, preserved scenario coverage, successful compilation, an approved focused run with verified discovery and execution, and a resolved legacy-removal decision. Otherwise report the specific pending decision or blocker rather than declaring completion.
+Update evidenced suite registrations using this revision's conventions, preserving topology and execution conditions. Retain the legacy source pending the removal decision below.
 
-Report source/target and necessary support paths, branch/base revision, substantive changes and their evidence, compile/test commands and actual outcomes (including discovered/executed/skipped coverage), legacy retention/removal, and remaining limitations. Distinguish code-based expectations from observed execution.
+## 5. Review
+
+Review the full diff against the scenario map and each addition's purpose. Remove unused injections (especially WebDriver), page fixtures, locals, captured event results, helpers and redundant configuration after checking inherited use and lifecycle effects. Retain a captured event if later assertions need that same consumed event.
+
+Check fixture creation, reset and disposal at method/class scope, including inherited hooks and failure cleanup. Ensure realms, clients, users, events, sessions, server settings and time offsets cannot leak state or introduce order dependence. Do not add blanket resets: verify managed ownership and preserve intentional cookie/session continuity. Confirm every negative scenario still fails for its intended reason, with equally strong assertions.
+
+Recheck suite selectors/imports for obsolete package names, omitted variants and duplicate discovery. Explain required registrations left unchanged while legacy sources remain; report unresolved coverage rather than silently dropping it.
+
+## 6. Validate and report
+
+Derive the narrowest test-compilation and focused execution commands from this revision's destination module, POMs and runner guidance. Check engine, selectors, profiles, annotations, parameters, conditions, fixtures and services. Compile the actual migrated test sources and necessary support code with test execution disabled; verify skip flags and phases rather than assuming main-source compilation is sufficient.
+
+Fix evidenced migration errors within scope. Distinguish environmental, toolchain, network and unrelated-module failures from migration defects. Ask before broader setup changes or uncertain workarounds. Never weaken assertions or remove cases to obtain a pass.
+
+After compilation, report its result and the focused command; explicitly ask before running tests unless that execution was already authorized. Wait for approval when required. If declined or unanswered, leave the migration compile-ready and unvalidated.
+
+Inspect fresh runner reports for the intended class, inherited tests, parameterized variants, executions and skips. Zero discovered tests, stale reports or excluded scenarios are not a pass. Reconcile execution with the scenario map and relevant suite coverage; a focused base run does not validate JVM/cluster behavior. Report unexecuted configurations and other gaps.
+
+After the migrated scenarios pass, honor an existing explicit legacy-source retention/removal decision; otherwise ask whether to remove the corresponding legacy test and wait. Approval covers only that source. Check consumers before deletion, pause for broader dependencies, review the deletion diff, and recheck affected suite registrations. Retain the source if declined or unanswered.
+
+Completion requires preserved coverage, successful compilation, an approved focused run with verified discovery/execution, and a resolved legacy-removal decision. Otherwise report the pending stage. Report source/target and necessary support paths, branch/base, substantive decisions, suite changes, commands and actual results, discovered/executed/skipped coverage, legacy-source status and limitations. Distinguish source inspection from observed execution.
